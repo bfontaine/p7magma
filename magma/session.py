@@ -9,7 +9,8 @@ except ImportError:  # Python 3
     from http.cookiejar import LWPCookieJar
 
 URLS = {
-    'login': '/~etudiant/saisirMotDePasseEtudiant.php',
+    'login': '/~etudiant/controlerMotDePasseEtudiant.php',
+    'logout': '/~etudiant/quitter.php',
     'results': '/~etudiant/inscriptions.php?quoi=1',
 }
 
@@ -19,6 +20,8 @@ DEFAULTS = {
 }
 
 YEARS = {
+    "L3": "2014_1",
+    "M1": "2014_36",
     "M2": "2014_37",
 }
 
@@ -85,29 +88,34 @@ class Session(BaseSession):
         return BeautifulSoup(self.post(*args, **kwargs).text)
 
 
-    def login(self, year, firstname, lastname, passwd):
+    def login(self, year, firstname, lastname, passwd, with_year=True):
         """
         Authenticate an user
         """
-        self.set_year(year)
+        firstname = firstname.upper()
+        lastname = lastname.upper()
+
+        if with_year:
+            if not self.set_year(year):
+                return False
 
         url = URLS['login']
         params = {
-            'prenom': firstname.upper(),
-            'nom': lastname.upper(),
+            'prenom': firstname,
+            'nom': lastname,
             'pwd': passwd,
         }
 
-        soup = self.post_soup(url, params=params)
+        soup = self.post_soup(url, data=params)
 
-        return not soup.select('font[color=red]')  # errror
+        return not soup.select('font[color=red]')  # error
 
 
     def logout(self):
-        self.get('/~etudiant/quitter.php')
+        self.get(URLS['logout'])
 
 
     def set_year(self, year):
         year = YEARS.get(year, year)
-        soup = self.post_soup('/~etudiant/login.php', params={'idCursus': year})
+        soup = self.post_soup('/~etudiant/login.php', data={'idCursus': year})
         return bool(soup.select('ul.rMenu-hor'))
