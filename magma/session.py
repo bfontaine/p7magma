@@ -103,6 +103,10 @@ class Session(BaseSession):
         return not soup.select('font[color=red]')  # errror
 
 
+    def logout(self):
+        self.get('/~etudiant/quitter.php')
+
+
     def set_year(self, year):
         year = YEARS.get(year, year)
         soup = self.post_soup('/~etudiant/login.php', params={'idCursus': year})
