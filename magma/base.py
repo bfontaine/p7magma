@@ -5,9 +5,9 @@ from courses import CoursesList
 
 class Student(object):
 
-    def __init__(self, firstname, lastname, passwd, fetch=True, **kw):
+    def __init__(self, year, firstname, lastname, passwd, fetch=True, **kw):
         self.session = Session(**kw)
-        self.session.login(firstname, lastname, passwd)
+        self.session.login(year, firstname, lastname, passwd)
         if fetch:
             self.fetch()
 

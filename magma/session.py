@@ -18,6 +18,10 @@ DEFAULTS = {
     'base_url': 'magma.informatique.univ-paris-diderot.fr:2201',
 }
 
+YEARS = {
+    "M2": "2014_37",
+}
+
 
 class Session(BaseSession):
     """
@@ -81,10 +85,12 @@ class Session(BaseSession):
         return BeautifulSoup(self.post(*args, **kwargs).text)
 
 
-    def login(self, firstname, lastname, passwd):  # FIXME
+    def login(self, year, firstname, lastname, passwd):
         """
         Authenticate an user
         """
+        self.set_year(year)
+
         url = URLS['login']
         params = {
             'prenom': firstname.upper(),
@@ -95,3 +101,9 @@ class Session(BaseSession):
         soup = self.post_soup(url, params=params)
 
         return not soup.select('font[color=red]')  # errror
+
+
+    def set_year(self, year):
+        year = YEARS.get(year, year)
+        soup = self.post_soup('/~etudiant/login.php', params={'idCursus': year})
+        return bool(soup.select('ul.rMenu-hor'))
