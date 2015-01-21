@@ -52,7 +52,7 @@ class CoursesList(list):
     def filter(self, criteria):
         if isinstance(criteria, str):
             _criteria = criteria
-            criteria = lambda x: x[_criteria]
+            criteria = lambda x: x.get(_criteria)
 
         return CoursesList(filter(criteria, self))
 
