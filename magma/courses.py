@@ -1,6 +1,12 @@
 # -*- coding: UTF-8 -*-
 
-from souputils import text, coursecode, parseint, parsefloat, parsebool
+from __future__ import unicode_literals
+
+from magma.souputils import text, coursecode, parseint, parsefloat, parsebool
+
+import platform
+if platform.python_version() >= '3.0':
+    unicode = str
 
 class Course(dict):
 
@@ -50,7 +56,7 @@ class CoursesList(list):
     # filters
 
     def filter(self, criteria):
-        if isinstance(criteria, str):
+        if isinstance(criteria, str) or isinstance(criteria, unicode):
             _criteria = criteria
             criteria = lambda x: x.get(_criteria)
 

@@ -14,7 +14,7 @@ def text(el, strip=True):
 
 def coursecode(el):
     txt = text(el)
-    return re.sub(r"\s*\[\d+\]$", "", txt)
+    return re.sub(r"\s*\[\d+\]$", u"", txt)
 
 
 def parse(el, typ):

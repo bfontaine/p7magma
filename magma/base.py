@@ -1,7 +1,7 @@
 # -*- coding: UTF-8 -*-
 
-from session import Session
-from courses import CoursesList
+from magma.session import Session
+from magma.courses import CoursesList
 
 class Student(object):
 
