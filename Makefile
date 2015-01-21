@@ -47,8 +47,11 @@ coverhtml:
 	@make COVERAGE_REPORT=html BINPREFIX=$(BINPREFIX) covercheck
 	@echo '--> open htmlcov/index.html'
 
+stylecheck:
+	$(BINPREFIX)pep8 $(SRC)
+
 dist: deps
 	$(BINPREFIX)python setup.py sdist
 
-publish: check-versions
+publish: stylecheck check-versions
 	$(BINPREFIX)python setup.py sdist upload
