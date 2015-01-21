@@ -7,9 +7,9 @@ if platform.python_version() < '2.7':
 else:
     import unittest
 
-import magma
+from magma import base
 
-class TestVersion(unittest.TestCase):
 
-    def test_version(self):
-        self.assertRegexpMatches(magma.__version__, r'^\d+\.\d+\.\d+')
+class TestBase(unittest.TestCase):
+
+    pass  # TODO
