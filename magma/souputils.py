@@ -1,5 +1,7 @@
 # -*- coding: UTF-8 -*-
 
+from __future__ import unicode_literals
+
 import re
 
 def text(el, strip=True):
@@ -9,12 +11,12 @@ def text(el, strip=True):
     text = el.text
     if strip:
         text = text.strip()
-    return text.encode("utf-8")
+    return text#.encode("utf-8")
 
 
 def coursecode(el):
     txt = text(el)
-    return re.sub(r"\s*\[\d+\]$", u"", txt)
+    return re.sub(r"\s*\[\d+\]$", "", txt, re.UNICODE)
 
 
 def parse(el, typ):
@@ -35,9 +37,9 @@ def parsefloat(el):
 def parsebool(el):
     txt = text(el)
     up = txt.upper()
-    if up == u"OUI":
+    if up == "OUI":
         return True
-    if up == u"NON":
+    if up == "NON":
         return False
 
     return bool(parseint(el))

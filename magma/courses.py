@@ -1,7 +1,5 @@
 # -*- coding: UTF-8 -*-
 
-from __future__ import unicode_literals
-
 from magma.souputils import text, coursecode, parseint, parsefloat, parsebool
 
 import platform
@@ -10,14 +8,14 @@ if platform.python_version() >= '3.0':
 
 class Course(dict):
 
-    def __str__(self):
-        results = ''
+    def desc(self):
+        s = '%s (%s, S%d) [%s, %.2f ECTS]' % (
+                self['title'], self['code'], self['semester'], self['status'],
+                self['ects'])
         if self['followed'] and self['session']:
-            results = ' --> %.2f/20 (%s)' % (self['result'], self['session'])
+            s += ' --> %.2f/20 (%s)' % (self['result'], self['session'])
 
-        return '%s (%s, S%d) [%s, %.2f ECTS]%s' % (
-            self['title'], self['code'], self['semester'], self['status'],
-            self['ects'], results)
+        return s
 
 
 class CoursesList(list):

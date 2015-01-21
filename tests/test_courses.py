@@ -22,15 +22,15 @@ class TestCourses(unittest.TestCase):
                 session="XX")
 
     # Course
-    # Course#__str__
+    # Course#desc
 
-    def test_course_str_no_results(self):
+    def test_course_desc_no_results(self):
         self.assertEquals("Alpha Beta (AB, S2) [REC, 42.00 ECTS]",
-                str(self.course1))
+                self.course1.desc())
 
-    def test_course_str_results(self):
+    def test_course_desc_results(self):
         expected = "Alpha Beta (AB, S2) [REC, 42.00 ECTS] --> 13.21/20 (XX)"
-        self.assertEquals(expected, str(self.course2))
+        self.assertEquals(expected, self.course2.desc())
 
     # CoursesList
 
