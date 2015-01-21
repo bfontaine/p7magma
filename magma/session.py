@@ -61,8 +61,7 @@ class Session(BaseSession):
 
     def get_url(self, url):
         """
-        Get the final URL for a given one. If it starts with a slash (``/``),
-        the ``ROOT_URL`` is prepended.
+        Get an absolute URL from a given one.
         """
         if url.startswith('/'):
             url = '%s%s' % (self.base_url, url)
@@ -82,9 +81,15 @@ class Session(BaseSession):
 
 
     def get_soup(self, *args, **kwargs):
+        """
+        Shortcut for ``get`` which returns a ``BeautifulSoup`` element
+        """
         return BeautifulSoup(self.get(*args, **kwargs).text)
 
     def post_soup(self, *args, **kwargs):
+        """
+        Shortcut for ``post`` which returns a ``BeautifulSoup`` element
+        """
         return BeautifulSoup(self.post(*args, **kwargs).text)
 
 
@@ -95,9 +100,8 @@ class Session(BaseSession):
         firstname = firstname.upper()
         lastname = lastname.upper()
 
-        if with_year:
-            if not self.set_year(year):
-                return False
+        if with_year and not self.set_year(year):
+            return False
 
         url = URLS['login']
         params = {
@@ -112,10 +116,17 @@ class Session(BaseSession):
 
 
     def logout(self):
+        """
+        Logout an user (untested)
+        """
         self.get(URLS['logout'])
 
 
     def set_year(self, year):
+        """
+        Set an user's year. This is required on magma just before the login.
+        It's called by default by ``login``.
+        """
         year = YEARS.get(year, year)
         soup = self.post_soup('/~etudiant/login.php', data={'idCursus': year})
         return bool(soup.select('ul.rMenu-hor'))
