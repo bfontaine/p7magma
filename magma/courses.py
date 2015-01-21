@@ -1,6 +1,6 @@
 # -*- coding: UTF-8 -*-
 
-from souputils import text, coursecode, parseint, parsefloat
+from souputils import text, coursecode, parseint, parsefloat, parsebool
 
 class Course(dict):
 
@@ -16,10 +16,16 @@ class Course(dict):
 
 class CoursesList(list):
 
-    def __init__(self, soup):
+    def __init__(self, lst):
         super(list, self).__init__()
-        self._soup = soup  # TEST
+        if hasattr(lst, 'HTML_FORMATTERS'):  # is a soup
+            self._populate(lst)
+        else:
+            for c in lst:
+                self.append(c)
 
+
+    def _populate(self, soup):
         tables = soup.select('table[rules=all]')
         if not tables:
             return
@@ -32,13 +38,26 @@ class CoursesList(list):
                     semester=parseint(tds[2]),
                     status=text(tds[3]),
                     ects=parsefloat(tds[4]),
-                    followed=text(tds[5]),
+                    followed=parsebool(tds[5]),
             )
 
-            if cs['followed']:
-                cs['result'] = parsefloat(tds[6])
-                cs['session'] = text(tds[7])
+            followed = cs['followed']
+            cs['result'] = parsefloat(tds[6]) if followed else None
+            cs['session'] = text(tds[7]) if followed else None
+
             self.append(cs)
 
+    # filters
+
+    def filter(self, criteria):
+        if isinstance(criteria, str):
+            _criteria = criteria
+            criteria = lambda x: x[_criteria]
+
+        return CoursesList(filter(criteria, self))
+
     def followed(self):
-        return filter(lambda x: x['followed'], self)
+        return self.filter('followed')
+
+    def with_results(self):
+        return self.filter('result')
