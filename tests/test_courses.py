@@ -39,16 +39,24 @@ class TestCourses(unittest.TestCase):
         self.assertIs(cs[0], self.course1)
         self.assertIs(cs[1], self.course2)
 
+    def test_courseslist_init_no_arg(self):
+        self.assertEquals([], CoursesList())
+
     # TODO CoursesList#_populate
+
+    # CoursesList#desc
+
+    def test_courseslist_empty_desc(self):
+        self.assertEquals("", CoursesList().desc())
 
     # CoursesList#filter
 
-    def test_courses_filter_str(self):
+    def test_courseslist_filter_str(self):
         self.course1["foo"] = 42
         cs = CoursesList([self.course1, self.course2])
         self.assertEquals([self.course1], cs.filter("foo"))
 
-    def test_courses_filter_fn(self):
+    def test_courseslist_filter_fn(self):
         cs = CoursesList([self.course1, self.course2])
         self.assertEquals([], cs.filter(lambda e: False))
 

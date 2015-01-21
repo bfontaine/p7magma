@@ -20,8 +20,10 @@ class Course(dict):
 
 class CoursesList(list):
 
-    def __init__(self, lst):
+    def __init__(self, lst=None):
         super(list, self).__init__()
+        if lst is None:
+            return
         if hasattr(lst, 'HTML_FORMATTERS'):  # is a soup
             self._populate(lst)
         else:
@@ -50,6 +52,9 @@ class CoursesList(list):
             cs['session'] = text(tds[7]) if followed else None
 
             self.append(cs)
+
+    def desc(self):
+        return "\n".join([c.desc() for c in self])
 
     # filters
 
