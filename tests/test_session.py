@@ -2,6 +2,8 @@
 # Most of these tests are based on didelcli's:
 #   https://github.com/bfontaine/didelcli/blob/master/tests/test_session.py
 
+from __future__ import unicode_literals
+
 import platform
 
 if platform.python_version() < '2.7':

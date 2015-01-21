@@ -1,5 +1,7 @@
 # -*- coding: UTF-8 -*-
 
+from __future__ import unicode_literals
+
 import platform
 
 if platform.python_version() < '2.7':
