@@ -9,14 +9,18 @@ class Student(object):
     A student. This object is a higher-level wrapper for a session.
     """
 
-    def __init__(self, year, firstname, lastname, passwd, fetch=True, **kw):
+    def __init__(self, year=None, firstname=None, lastname=None, passwd=None,
+                 fetch=True, **kw):
         """
-        Create a new student session.
+        Create a new student session. Unless you really know what you're doing
+        you should pass ``year``, ``firstname``, ``lastname`` and ``passwd``
+        arguments to let the module handle the login part.
         """
         self.session = Session(**kw)
-        self.session.login(year, firstname, lastname, passwd)
-        if fetch:
-            self.fetch()
+        if year and firstname and lastname and passwd:
+            self.session.login(year, firstname, lastname, passwd)
+            if fetch:
+                self.fetch()
 
     def fetch(self):
         """
