@@ -3,6 +3,7 @@
 from magma.session import Session
 from magma.courses import CoursesList
 
+
 class Student(object):
     """
     A student. This object is a higher-level wrapper for a session.
@@ -16,7 +17,6 @@ class Student(object):
         self.session.login(year, firstname, lastname, passwd)
         if fetch:
             self.fetch()
-
 
     def fetch(self):
         """

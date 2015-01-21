@@ -6,6 +6,7 @@ import platform
 if platform.python_version() >= '3.0':
     unicode = str
 
+
 class Course(dict):
     """
     A course, which is a dict with at least the following attributes:
@@ -24,8 +25,8 @@ class Course(dict):
         A textual description of this course
         """
         s = '%s (%s, S%d) [%s, %.2f ECTS]' % (
-                self['title'], self['code'], self['semester'], self['status'],
-                self['ects'])
+            self['title'], self['code'], self['semester'], self['status'],
+            self['ects'])
         if self['followed'] and self['session']:
             s += ' --> %.2f/20 (%s)' % (self['result'], self['session'])
 
@@ -51,7 +52,6 @@ class CoursesList(list):
             for c in lst:
                 self.append(c)
 
-
     def _populate(self, soup):
         """
         Populate the list, assuming ``soup`` is a ``BeautifulSoup`` object.
@@ -63,12 +63,12 @@ class CoursesList(list):
         for tr in table.select('tr')[1:]:
             tds = tr.select('td')
             cs = Course(
-                    code=coursecode(tds[0]),
-                    title=text(tds[1]),
-                    semester=parseint(tds[2]),
-                    status=text(tds[3]),
-                    ects=parsefloat(tds[4]),
-                    followed=parsebool(tds[5]),
+                code=coursecode(tds[0]),
+                title=text(tds[1]),
+                semester=parseint(tds[2]),
+                status=text(tds[3]),
+                ects=parsefloat(tds[4]),
+                followed=parsebool(tds[5]),
             )
 
             followed = cs['followed']

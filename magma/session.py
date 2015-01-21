@@ -48,7 +48,6 @@ class Session(BaseSession):
         self.base_url = base_url
         self.cookies = LWPCookieJar()
 
-
     def _set_header_defaults(self, kwargs):
         """
         Internal utility to set default headers on get/post requests.
@@ -58,7 +57,6 @@ class Session(BaseSession):
         headers.update(req_headers)
         kwargs['headers'] = headers
 
-
     def get_url(self, url):
         """
         Get an absolute URL from a given one.
@@ -67,18 +65,15 @@ class Session(BaseSession):
             url = '%s%s' % (self.base_url, url)
         return url
 
-
     def get(self, url, *args, **kwargs):
         self._set_header_defaults(kwargs)
         url = self.get_url(url)
         return super(Session, self).get(url, *args, **kwargs)
 
-
     def post(self, url, *args, **kwargs):
         self._set_header_defaults(kwargs)
         url = self.get_url(url)
         return super(Session, self).post(url, *args, **kwargs)
-
 
     def get_soup(self, *args, **kwargs):
         """
@@ -91,7 +86,6 @@ class Session(BaseSession):
         Shortcut for ``post`` which returns a ``BeautifulSoup`` element
         """
         return BeautifulSoup(self.post(*args, **kwargs).text)
-
 
     def login(self, year, firstname, lastname, passwd, with_year=True):
         """
@@ -114,13 +108,11 @@ class Session(BaseSession):
 
         return not soup.select('font[color=red]')  # error
 
-
     def logout(self):
         """
         Logout an user (untested)
         """
         self.get(URLS['logout'])
-
 
     def set_year(self, year):
         """

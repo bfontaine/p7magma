@@ -4,6 +4,7 @@ from __future__ import unicode_literals
 
 import re
 
+
 def text(el, strip=True):
     """
     Return the text of a ``BeautifulSoup`` element
@@ -14,7 +15,7 @@ def text(el, strip=True):
     text = el.text
     if strip:
         text = text.strip()
-    return text#.encode("utf-8")
+    return text  # .encode("utf-8")
 
 
 def coursecode(el):
@@ -44,11 +45,13 @@ def parseint(el):
     """
     return parse(el, int)
 
+
 def parsefloat(el):
     """
     Parse a ``BeautifulSoup`` element as float
     """
     return parse(el, float)
+
 
 def parsebool(el):
     """
