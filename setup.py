@@ -25,7 +25,7 @@ setup(
     description='Magma Python interface',
     long_description="""\
 Magma is the server on which Paris Diderot CS students can find their schedules
-and results (M2 only). This module provides a Python interface for it.
+and results (M1 & M2 only). This module provides a Python interface for it.
 """,
     install_requires=[
         'beautifulsoup4 >= 4.3.2',
