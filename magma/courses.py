@@ -11,11 +11,15 @@ class Course(dict):
     """
     A course, which is a dict with at least the following attributes:
         - title
-        - code
-        - semester (1 or 2)
         - statut (REC or OPT)
-        - ects
-    and possibly the following one:
+    depending on the year it might have these ones:
+        M1:
+            - jury
+        M2:
+            - code
+            - semester (1 or 2)
+            - ects
+    and possibly the following ones:
         - result
         - session
     """
@@ -24,11 +28,21 @@ class Course(dict):
         """
         A textual description of this course
         """
-        s = '%s (%s, S%d) [%s, %.2f ECTS]' % (
-            self['title'], self['code'], self['semester'], self['status'],
-            self['ects'])
+        if 'ects' in self:
+            fmt = '%s (%s, S%d) [%s, %.2f ECTS]'
+            fields = ('title', 'code', 'semester', 'status', 'ects')
+        else:
+            fmt = '%s'
+            fields = ('title',)
+
+        s = fmt % tuple([self[f] for f in fields])
+
         if self['followed'] and self['session']:
-            s += ' --> %.2f/20 (%s)' % (self['result'], self['session'])
+            res = self['result']
+            if self.get('jury', 0) > 0:
+                res = self['jury']
+
+            s += ' --> %.2f/20 (%s)' % (res, self['session'])
 
         return s
 
@@ -59,8 +73,40 @@ class CoursesList(list):
         tables = soup.select('table[rules=all]')
         if not tables:
             return
-        table = tables[0]
-        for tr in table.select('tr')[1:]:
+        trs = tables[0].select('tr')[1:]
+
+        if len(trs[0]) == 5:
+            # M1
+            self._populate_small_table(trs)
+        else:
+            # M2
+            self._populate_large_table(trs)
+
+    def _populate_small_table(self, trs):
+        """
+        Populate the list, given that ``trs`` is a ``BeautifulSoup`` elements
+        list from a large table (5 columns).
+        """
+        for tr in trs:
+            tds = tr.select('td')
+            cs = Course(
+                title=text(tds[0]),
+                followed=parsebool(tds[1]),
+            )
+
+            followed = cs['followed']
+            cs['result'] = parsefloat(tds[2]) if followed else None
+            cs['jury'] = parsefloat(tds[3]) if followed else None
+            cs['session'] = text(tds[4]) if followed else None
+
+            self.append(cs)
+
+    def _populate_large_table(self, trs):
+        """
+        Populate the list, given that ``trs`` is a ``BeautifulSoup`` elements
+        list from a large table (8 columns).
+        """
+        for tr in trs:
             tds = tr.select('td')
             cs = Course(
                 code=coursecode(tds[0]),

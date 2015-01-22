@@ -28,5 +28,5 @@ class Student(object):
         creating the object (this is the default) because the remote sessions
         are short.
         """
-        soup = self.session.get_soup("/~etudiant/inscriptions.php?quoi=1")
+        soup = self.session.get_results_soup()
         self.courses = CoursesList(soup)

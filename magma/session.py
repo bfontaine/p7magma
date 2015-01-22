@@ -11,7 +11,10 @@ except ImportError:  # Python 3
 URLS = {
     'login': '/~etudiant/controlerMotDePasseEtudiant.php',
     'logout': '/~etudiant/quitter.php',
-    'results': '/~etudiant/inscriptions.php?quoi=1',
+    'results': {
+        '2014_36': '/~etudiant/voirNotesM1.php',
+        '2014_37': '/~etudiant/inscriptions.php?quoi=1',
+    }
 }
 
 DEFAULTS = {
@@ -87,6 +90,17 @@ class Session(BaseSession):
         """
         return BeautifulSoup(self.post(*args, **kwargs).text)
 
+    def get_results_soup(self, year=None):
+        """
+        ``get_soup`` on the results page. The page URL depends on the year.
+        """
+        if year is None:
+            year = self.year
+        year = YEARS.get(year, year)
+
+        return self.get_soup(URLS['results'][year])
+
+
     def login(self, year, firstname, lastname, passwd, with_year=True):
         """
         Authenticate an user
@@ -119,6 +133,7 @@ class Session(BaseSession):
         Set an user's year. This is required on magma just before the login.
         It's called by default by ``login``.
         """
-        year = YEARS.get(year, year)
-        soup = self.post_soup('/~etudiant/login.php', data={'idCursus': year})
+        self.year = YEARS.get(year, year)
+        data = {'idCursus': self.year}
+        soup = self.post_soup('/~etudiant/login.php', data=data)
         return bool(soup.select('ul.rMenu-hor'))
