@@ -1,3 +1,7 @@
+v0.1.2-alpha, 2015-01-22
+
+* Experimental support for the M1 page
+
 v0.1.1, 2015-01-22
 
 * Allow the creation of empty ``Student`` objects
