@@ -100,7 +100,6 @@ class Session(BaseSession):
 
         return self.get_soup(URLS['results'][year])
 
-
     def login(self, year, firstname, lastname, passwd, with_year=True):
         """
         Authenticate an user
