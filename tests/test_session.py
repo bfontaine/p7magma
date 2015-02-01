@@ -20,32 +20,8 @@ class TestSession(unittest.TestCase):
 
     def test_ua_set_on_init(self):
         ua = 'th+is/an user 4gent'
-        s = Session(user_agent=ua)
-        self.assertEquals(ua, s.user_agent)
-
-    def test_set_headers_defaults_user_agent_already_present(self):
-        ua = 'some/random - user+agent v42.1.3.21'
-        kwargs = {'headers': {'User-Agent': ua}}
-        s = Session(user_agent='another/user_agent v1')
-        s._set_header_defaults(kwargs)  # in-place change
-        self.assertEquals(ua, kwargs['headers']['User-Agent'])
-
-    def test_set_headers_defaults_user_agent_not_present_no_headers(self):
-        ua = 'some/random - user+agent v42.1.3.21'
-        kwargs = {}
-        s = Session(user_agent=ua)
-        s._set_header_defaults(kwargs)  # in-place change
-        self.assertIn('headers', kwargs)
-        self.assertEquals(ua, kwargs['headers']['User-Agent'])
-
-    def test_set_headers_defaults_user_agent_not_present_with_headers(self):
-        ua = 'some/random - user+agent v42.1.3.21'
-        kwargs = {'headers': {'X-Foo': '42'}}
-        s = Session(user_agent=ua)
-        s._set_header_defaults(kwargs)  # in-place change
-        self.assertIn('headers', kwargs)
-        self.assertEquals(ua, kwargs['headers']['User-Agent'])
-
+        s = Session(**{"User-Agent":ua})
+        self.assertEquals(ua, s.headers["User-Agent"])
 
     # .get_url
 

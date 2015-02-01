@@ -17,8 +17,11 @@ URLS = {
     }
 }
 
+HEADERS = {
+    'User-Agent': 'Python/P7Magma +b@ptistefontaine.fr',
+}
+
 DEFAULTS = {
-    'user_agent': 'Python/P7Magma +b@ptistefontaine.fr',
     'base_url': 'magma.informatique.univ-paris-diderot.fr:2201',
 }
 
@@ -31,8 +34,7 @@ YEARS = {
 
 class Session(BaseSession):
     """
-    A session with builtin authentification support for Magma as well as custom
-    default headers.
+    A session with builtin authentification support for Magma
 
     This based on ``didelcli.session``:
         https://github.com/bfontaine/didelcli/blob/master/didel/session.py
@@ -42,23 +44,14 @@ class Session(BaseSession):
         """
         Same constructor as parent class but with a cookies jar.
         """
-        user_agent = kwargs.pop('user_agent', DEFAULTS['user_agent'])
-        base_url = 'http://' + kwargs.pop('base_url', DEFAULTS['base_url'])
+        self.base_url = 'http://' + kwargs.pop('base_url', DEFAULTS['base_url'])
+        headers = {}
+        for k, v in HEADERS.items():
+            headers[k] = kwargs.pop(k, v)
 
         super(Session, self).__init__(*args, **kwargs)
-
-        self.user_agent = user_agent
-        self.base_url = base_url
+        self.headers.update(headers)
         self.cookies = LWPCookieJar()
-
-    def _set_header_defaults(self, kwargs):
-        """
-        Internal utility to set default headers on get/post requests.
-        """
-        headers = {'User-Agent': self.user_agent}
-        req_headers = kwargs.pop('headers', {})
-        headers.update(req_headers)
-        kwargs['headers'] = headers
 
     def get_url(self, url):
         """
@@ -69,12 +62,10 @@ class Session(BaseSession):
         return url
 
     def get(self, url, *args, **kwargs):
-        self._set_header_defaults(kwargs)
         url = self.get_url(url)
         return super(Session, self).get(url, *args, **kwargs)
 
     def post(self, url, *args, **kwargs):
-        self._set_header_defaults(kwargs)
         url = self.get_url(url)
         return super(Session, self).post(url, *args, **kwargs)
 
