@@ -29,7 +29,6 @@ and results (M1 & M2 only). This module provides a Python interface for it.
 """,
     install_requires=[
         'beautifulsoup4 >= 4.3.2',
-        'lxml >= 3.4.0',
         'requests >= 2.4.2',
     ],
     classifiers=[
