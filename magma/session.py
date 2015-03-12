@@ -44,7 +44,8 @@ class Session(BaseSession):
         """
         Same constructor as parent class but with a cookies jar.
         """
-        self.base_url = 'http://' + kwargs.pop('base_url', DEFAULTS['base_url'])
+        base_url = kwargs.pop('base_url', DEFAULTS['base_url'])
+        self.base_url = 'http://' + base_url
         headers = {}
         for k, v in HEADERS.items():
             headers[k] = kwargs.pop(k, v)
