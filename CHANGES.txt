@@ -1,6 +1,7 @@
-v0.1.2, 2015-02-?? (upcoming version)
+v0.1.2, 2015-03-12
 
 * `lxml` dependency removed
+* Parsing of special result "ABI" fixed
 
 v0.1.2-alpha, 2015-01-22
 
