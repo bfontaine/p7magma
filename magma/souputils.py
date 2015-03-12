@@ -53,6 +53,13 @@ def parsefloat(el):
     return parse(el, float)
 
 
+def parseresult(el):
+    s = text(el)
+    if s == "ABI":
+        return s
+    return parsefloat(el)
+
+
 def parsebool(el):
     """
     Parse a ``BeautifulSoup`` element as a bool

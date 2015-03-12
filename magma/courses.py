@@ -1,6 +1,7 @@
 # -*- coding: UTF-8 -*-
 
 from magma.souputils import text, coursecode, parseint, parsefloat, parsebool
+from magma.souputils import parseresult
 
 import platform
 if platform.python_version() >= '3.0':
@@ -20,7 +21,7 @@ class Course(dict):
             - semester (1 or 2)
             - ects
     and possibly the following ones:
-        - result
+        - result (None or float or str)
         - session
     """
 
@@ -118,8 +119,8 @@ class CoursesList(list):
             )
 
             followed = cs['followed']
-            cs['result'] = parsefloat(tds[6]) if followed else None
             cs['session'] = text(tds[7]) if followed else None
+            cs['result'] = parseresult(tds[6]) if followed else None
 
             self.append(cs)
 
