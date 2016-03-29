@@ -19,6 +19,10 @@ website.
 Note: this project is useless for you if you’re not a CS student at Paris
 Diderot.
 
+Note 2: the code will likely not work for years 2015/2016 and after but I don’t
+have access to the results website anymore; please open a pull-request if you
+can fix it.
+
 Install
 -------
 
